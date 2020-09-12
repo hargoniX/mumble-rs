@@ -18,3 +18,7 @@ os_info = { version = "2.0.0", default-features = false }
 [dev-dependencies]
 pretty_env_logger = "0.4"
 rand = "0.7"
+
+[patch.crates-io]
+openssl = { git = "https://github.com/sfackler/rust-openssl"}
+openssl-sys = { git = "https://github.com/sfackler/rust-openssl" }

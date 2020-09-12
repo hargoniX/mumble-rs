@@ -6,11 +6,11 @@ use std::env;
 #[tokio::main]
 async fn main() {
     pretty_env_logger::init();
+    let args: Vec<String> = env::args().collect();
     let mut client = Client::new(
         HandleStruct {},
-        // CHange this to your server
-        "IP:port".parse().unwrap(),
-        "BettinaBot".to_string(),
+        args[1].parse().unwrap(),
+        "justabot".to_string(),
         false,
     )
     .await
@@ -24,16 +24,16 @@ struct HandleStruct {}
 impl Handler for HandleStruct {
     async fn handle(
         &mut self,
-        sender: &mut Sender,
-        packet: &Packet,
-        client_info: &ClientInfo,
+        _sender: &mut Sender,
+        _packet: &Packet,
+        _client_info: &ClientInfo,
     ) -> Result<()> {
         Ok(())
     }
 
     async fn ready(&mut self, sender: &mut Sender, client_info: &ClientInfo) -> Result<()> {
         let args: Vec<String> = env::args().collect();
-        let channel_name = &args[1];
+        let channel_name = &args[2];
         let channel = get_channel_by_name(client_info, channel_name.to_string()).unwrap();
         let mut users = channel.users.clone();
         users.shuffle(&mut thread_rng());
@@ -45,7 +45,7 @@ impl Handler for HandleStruct {
         Ok(())
     }
 
-    async fn finish(&mut self, sender: &mut Sender, client_info: &ClientInfo) -> Result<()> {
+    async fn finish(&mut self, _sender: &mut Sender, _client_info: &ClientInfo) -> Result<()> {
         Ok(())
     }
 }
